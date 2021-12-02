@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="home_fragment_label">Home Fragment</string>
+    <string name="next">Back</string>
+    <string name="previous">Previous</string>
+    <string name="news">Новости</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Инновационный уикенд: «Техносреда - 21»</string>
+
+</resources>
