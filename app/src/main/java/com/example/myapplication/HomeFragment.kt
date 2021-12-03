@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.button_home).setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_HomeFragment_to_NewsPreviewList)
         }
     }
 }

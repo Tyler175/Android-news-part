@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/NewsPreviewList">
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.myapplication.HomeFragment"
@@ -11,30 +11,32 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_HomeFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_HomeFragment_to_NewsPreviewList"
+            app:destination="@id/NewsPreviewList" />
     </fragment>
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.myapplication.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/NewsPreviewList"
+        android:name="com.example.myapplication.NewsPreviewList"
+        android:label="NewsPreviewList"
+        tools:layout="@layout/news_preview_list">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_NewsPreviewList_to_FullNews"
+            app:destination="@id/FullNews" />
         <action
-            android:id="@+id/action_FirstFragment_to_HomeFragment"
+            android:id="@+id/action_NewsPreviewList_to_HomeFragment"
             app:destination="@id/HomeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.myapplication.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/FullNews"
+        android:name="com.example.myapplication.FullNews"
+        android:label="FullNews"
+        tools:layout="@layout/full_news">
+
+        <argument android:name="link" app:argType="string" android:defaultValue="link"/>
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_FullNews_to_NewsPreviewList"
+            app:destination="@id/NewsPreviewList" />
     </fragment>
 </navigation>

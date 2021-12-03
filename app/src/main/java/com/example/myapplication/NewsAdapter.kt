@@ -1,32 +1,45 @@
 package com.example.myapplication
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 class NewsViewHolder(view: View) : RecyclerView.ViewHolder(view){
-    val newsHeader: TextView = view.findViewById<TextView>(R.id.news_header)
-    val newsBody: TextView = view.findViewById<TextView>(R.id.news_body)
-    val newsDate: TextView = view.findViewById<TextView>(R.id.news_date)
-    fun bind(news: News, clickListener: OnItemClickListener)
+    private val newsTitle: TextView = view.findViewById<TextView>(R.id.news_title)
+    private val newsBody: TextView = view.findViewById<TextView>(R.id.news_description)
+    private val newsDate: TextView = view.findViewById<TextView>(R.id.news_date)
+    private val newsImage: ImageView = view.findViewById<ImageView>(R.id.news_image)
+    private var link = ""
+
+    init {
+        view.setOnClickListener{
+            view.findNavController().navigate(NewsPreviewListDirections.actionNewsPreviewListToFullNews(link))
+        }
+    }
+
+    fun bind(news: News)
     {
-        newsHeader.text = news.header
+        newsTitle.text = news.title
         newsBody.text = news.body
         newsDate.text = news.date
-        itemView.setOnClickListener {
-            clickListener.onItemClicked(news, Bundle())
-        }
+        if (news.imgSource != "") Picasso.get().load(news.imgSource).placeholder(R.drawable.news_image).error(R.drawable.news_image).into(newsImage)
+
+        link = news.link
     }
 
 }
 
-class NewsAdapter(private val dataSet: Array<News>, val itemClickListener: OnItemClickListener) :
+class NewsAdapter() :
     RecyclerView.Adapter<NewsViewHolder>() {
 
-    
+    private val listNews = mutableListOf<News>()
+
+
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): NewsViewHolder {
@@ -42,14 +55,16 @@ class NewsAdapter(private val dataSet: Array<News>, val itemClickListener: OnIte
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        val news = dataSet.get(position)
-        newsViewHolder.bind(news, itemClickListener)
+        val news = listNews[position]
+        newsViewHolder.bind(news)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = listNews.size
 
-}
-interface OnItemClickListener{
-    fun onItemClicked(news: News, savedInstanceState: Bundle?)
+    fun set(list: MutableList<News>){
+        this.listNews.clear()
+        this.listNews.addAll(list)
+        notifyDataSetChanged()
+    }
 }
