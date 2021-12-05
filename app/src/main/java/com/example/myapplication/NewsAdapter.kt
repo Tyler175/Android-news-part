@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,7 @@ class NewsAdapter() :
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+
         val news = listNews[position]
         newsViewHolder.bind(news)
     }
