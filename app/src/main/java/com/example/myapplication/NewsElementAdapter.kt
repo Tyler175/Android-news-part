@@ -13,10 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-fun prepareHTMLForTagHandling(htmlSource: String): String {
-    return  htmlSource.replace("<li>", "<customLi>")
-        .replace("</li>", "</customLi>")
-}
+
 
 class TextViewHolder(view: View) : RecyclerView.ViewHolder(view){
     private val newsText: TextView = view.findViewById<TextView>(R.id.news_text)
@@ -24,7 +21,7 @@ class TextViewHolder(view: View) : RecyclerView.ViewHolder(view){
     fun bind(newsElement: NewsElement)
     {
         newsText.text = HtmlCompat.fromHtml(
-            prepareHTMLForTagHandling(newsElement.elementHtml),
+            newsElement.elementHtml,
             HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH,
             null,
             CustomTagHandler()

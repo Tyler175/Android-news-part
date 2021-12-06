@@ -73,7 +73,10 @@ class FullNews: Fragment(), CoroutineScope{
 
         }
     }
-
+    private fun prepareHTMLForTagHandling(htmlSource: String): String {
+        return  htmlSource.replace("<li>", "<customLi>")
+            .replace("</li>", "</customLi>")
+    }
     private fun getData(){
         try {
             val document = Jsoup.connect(arguments?.getString("link") ?: "")
@@ -91,7 +94,7 @@ class FullNews: Fragment(), CoroutineScope{
 
             val views = document.select("span.hits").text()
 
-            val content = document.select("div#content>p, div#content>blockquote, div#content>ul, div#content>h2, div#content>h3, div#content>div.carousel.slide")
+            val content = document.select("div#content>p, div#content>blockquote, div#content>ul, div#content>ol, div#content>h2, div#content>h3, div#content>div.carousel.slide")
 
             for (element in content) {
                 if (element.normalName()=="blockquote"){
@@ -107,7 +110,8 @@ class FullNews: Fragment(), CoroutineScope{
                     listNewsElement.add(NewsElement(3, "", imageSources, "", ""))
                 }
                 else if (element.html()!="") {
-                    val text = element.html()+"<br>"
+                    var text = element.html()+"<br>"
+                    if (element.normalName()=="ul") text = prepareHTMLForTagHandling(text)
                     listNewsElement.add(NewsElement(1, text, null, "", ""))
                 }
 

@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,10 +34,10 @@ class NewsPreviewList : Fragment() {
                 "«Техносреда – 2021»"
     )}
 
-    private val url = "https://etu.ru/ru/studentam/studencheskie-novosti/"
+    private val url = "https://etu.ru/ru/studentam/studencheskie-novosti/?start="
     private val listNews = mutableListOf<News>()
     private lateinit var adapter: NewsAdapter
-
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,20 +60,31 @@ class NewsPreviewList : Fragment() {
         showHeaderTextView.text = "Новости"
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.news_list)
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        val linearLayoutManager = LinearLayoutManager(this.context)
+        recyclerView.layoutManager = linearLayoutManager
+
+        scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+
+                GlobalScope.launch {
+                    getData(page)
+                }
+            }
+        }
+        recyclerView.addOnScrollListener(scrollListener);
 
         adapter = NewsAdapter()
 
         recyclerView.adapter = adapter
 
         GlobalScope.launch {
-            getData()
+            getData(0)
         }
     }
 
-    private fun getData(){
+    private fun getData(page: Int){
         try {
-            val document = Jsoup.connect(url)
+            val document = Jsoup.connect(url + (page*10).toString())
                 .userAgent("Chrome/4.0.249.0 Safari/532.5")
                 .referrer("http://www.google.com")
                 .get()
